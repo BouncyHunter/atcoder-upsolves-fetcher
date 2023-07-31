@@ -38,7 +38,7 @@ users = list(input().split())
 result = getSubmissionsAt(users, contestId)
 problemIndex = getProblemIdToIndex(contestId)
 
-resultTable = PrettyTable(['User'] + list(problemIndex.values()))
+resultTable = PrettyTable(['User', 'Solved'] + list(problemIndex.values()))
 resultTable.align['User'] = 'l'
 
 for user, submissions in result.items():
@@ -52,13 +52,14 @@ for user, submissions in result.items():
             if submission['result'] == 'AC':
                 ranklist[problemIndex[submission['problem_id']]] *= -1
     
-    resultRow = [user]
+    resultRow = [user, 0]
     for index, stat in ranklist.items():
         token = ('-' if stat <= 0 else '+') + str(-stat if stat <= 0 else stat-1)
         if token.endswith('0'):
             token = token[:-1]
         if token[0] == '+':
             token = '\033[32m' + token + '\033[0m'
+            resultRow[1] += 1
         resultRow.append(token)
     resultTable.add_row(resultRow)
 
