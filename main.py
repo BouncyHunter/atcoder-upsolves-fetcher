@@ -55,7 +55,7 @@ for user, submissions in result.items():
     resultRow = [user, 0]
     for index, stat in ranklist.items():
         token = ('-' if stat <= 0 else '+') + str(-stat if stat <= 0 else stat-1)
-        if token.endswith('0'):
+        if token == '+0' or token == '-0':
             token = token[:-1]
         if token[0] == '+':
             token = '\033[32m' + token + '\033[0m'
