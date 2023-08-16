@@ -1,9 +1,13 @@
 import requests
 import json
+import sys
 
 import time
 
 from tqdm import tqdm
+
+def eprint(*args, **kwargs):
+    print(*args, file=sys.stderr, **kwargs)
 
 def fetchSingleUserSubmissions(username, epoch):
     targetURL = "https://kenkoooo.com/atcoder/atcoder-api/v3/user/submissions?user={}&from_second={}".format(username, str(epoch))
@@ -25,13 +29,13 @@ def fetchContestInfo():
     global staticContestInfo
 
     if len(staticContestInfo) == 0:
-        print("Fetching Contest Info...", end='')
+        eprint("Fetching Contest Info...", end='')
         targetURL = "https://kenkoooo.com/atcoder/resources/contests.json"
         response = requests.get(targetURL)
 
         if response.ok:
             staticContestInfo = json.loads(response.text)
-            print("\tDone.")
+            eprint("\tDone.")
     
     if len(staticContestInfo) == 0:
         return False, []
@@ -42,15 +46,15 @@ staticContestProblemInfo = []
 def fetchProblemIdFromContest():
     global staticContestProblemInfo
     if len(staticContestProblemInfo) == 0:
-        print("Fetching Problem Info...", end='')
+        eprint("Fetching Problem Info...", end='')
         targetURL = "https://kenkoooo.com/atcoder/resources/contest-problem.json"
         response = requests.get(targetURL)
         if response.ok:
             staticContestProblemInfo = json.loads(response.text)
-            print("\tDone.")
+            eprint("\tDone.")
     
     if len(staticContestProblemInfo) == 0:
-        print('Error: Failed to fetch problem ids.')
+        eprint('Error: Failed to fetch problem ids.')
     
     return staticContestProblemInfo
     
